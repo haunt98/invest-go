@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -15,12 +16,17 @@ type Service interface {
 }
 
 type service struct {
-	repo Repository
+	repo     Repository
+	location *time.Location
 }
 
-func NewService(repo Repository) Service {
+func NewService(
+	repo Repository,
+	location *time.Location,
+) Service {
 	return &service{
-		repo: repo,
+		repo:     repo,
+		location: location,
 	}
 }
 
@@ -28,6 +34,16 @@ func (s *service) List(ctx context.Context) ([]Investment, error) {
 	investments, err := s.repo.GetInvestments(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("repository failed to get investments: %w", err)
+	}
+
+	// Simple date format
+	for i := range investments {
+		t, err := time.ParseInLocation(time.RFC3339, investments[i].Date, s.location)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse time: %w", err)
+		}
+
+		investments[i].Date = t.Format(dateFormat)
 	}
 
 	return investments, nil
@@ -39,6 +55,14 @@ func (s *service) Add(ctx context.Context, investment Investment) error {
 	if !validateInvestment(investment) {
 		return fmt.Errorf("investment %+v not valid", investment)
 	}
+
+	// Save better date format
+	t, err := time.ParseInLocation(dateFormat, investment.Date, s.location)
+	if err != nil {
+		return fmt.Errorf("failed to parse time: %w", err)
+	}
+
+	investment.Date = t.Format(time.RFC3339)
 
 	if err := s.repo.CreateInvestment(ctx, investment); err != nil {
 		return fmt.Errorf("repository failed to create investment: %w", err)

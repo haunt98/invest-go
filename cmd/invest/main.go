@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"time"
 
 	"github.com/haunt98/invest-go/internal/cli"
 	_ "github.com/mattn/go-sqlite3"
@@ -19,7 +20,13 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	app, err := cli.NewApp(db)
+	// Shout out to Sai Gon, Viet Nam
+	location, err := time.LoadLocation("Asia/Ho_Chi_Minh")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	app, err := cli.NewApp(db, location)
 	if err != nil {
 		log.Fatalln(err)
 	}

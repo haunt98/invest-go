@@ -10,6 +10,8 @@ import (
 
 type Handler interface {
 	List(ctx context.Context) error
+	Add(ctx context.Context, investment Investment) error
+	Remove(ctx context.Context, id string) error
 }
 
 type handler struct {
@@ -58,4 +60,12 @@ func (h *handler) List(ctx context.Context) error {
 	tableWriter.Render()
 
 	return nil
+}
+
+func (h *handler) Add(ctx context.Context, investment Investment) error {
+	return h.service.Add(ctx, investment)
+}
+
+func (h *handler) Remove(ctx context.Context, id string) error {
+	return h.service.Remove(ctx, id)
 }
