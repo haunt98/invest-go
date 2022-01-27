@@ -32,7 +32,7 @@ const (
 	usageVerbose = "debug"
 	usageID      = "id of investment"
 	usageAmount  = "amount of investment"
-	usageDate    = "date of investment"
+	usageDate    = "date of investment, example 2022-12-31"
 	usageSource  = "source of investment"
 )
 
