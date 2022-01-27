@@ -36,14 +36,12 @@ func (s *service) List(ctx context.Context) ([]Investment, error) {
 		return nil, fmt.Errorf("repository failed to get investments: %w", err)
 	}
 
-	// Simple date format
+	// Simple date format to output
 	for i := range investments {
-		t, err := time.ParseInLocation(time.RFC3339, investments[i].Date, s.location)
+		investments[i].Date, err = dateToOutput(investments[i].Date, s.location)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse time: %w", err)
+			return nil, err
 		}
-
-		investments[i].Date = t.Format(dateFormat)
 	}
 
 	return investments, nil
@@ -56,13 +54,12 @@ func (s *service) Add(ctx context.Context, investment Investment) error {
 		return fmt.Errorf("investment %+v not valid", investment)
 	}
 
-	// Save better date format
-	t, err := time.ParseInLocation(dateFormat, investment.Date, s.location)
+	// Better date format from input
+	var err error
+	investment.Date, err = dateFromInput(investment.Date, s.location)
 	if err != nil {
-		return fmt.Errorf("failed to parse time: %w", err)
+		return err
 	}
-
-	investment.Date = t.Format(time.RFC3339)
 
 	if err := s.repo.CreateInvestment(ctx, investment); err != nil {
 		return fmt.Errorf("repository failed to create investment: %w", err)
