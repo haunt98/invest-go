@@ -7,15 +7,19 @@ import (
 )
 
 const (
-	createInvestment = "createInvestment"
-	deleteInvestment = "deleteInvestment"
+	preparedCreateInvestment = "createInvestment"
+	preparedDeleteInvestment = "deleteInvestment"
 
 	stmtGetInvestments   = "SELECT id, amount, date, source FROM investments"
 	stmtCreateInvestment = "INSERT INTO investments (id, amount, date, source) VALUES (?, ?, ?, ?)"
 	stmtDeleteInvestment = "DELETE FROM investment WHERE id = ?"
 )
 
-type Repository interface{}
+type Repository interface {
+	GetInvestments(ctx context.Context) ([]Investment, error)
+	CreateInvestment(ctx context.Context, investment Investment) error
+	DeleteInvestment(ctx context.Context, id string) error
+}
 
 type repo struct {
 	db *sql.DB
@@ -29,12 +33,12 @@ func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
 	preparedStmts := make(map[string]*sql.Stmt)
 
 	var err error
-	preparedStmts[createInvestment], err = db.PrepareContext(ctx, stmtCreateInvestment)
+	preparedStmts[preparedCreateInvestment], err = db.PrepareContext(ctx, stmtCreateInvestment)
 	if err != nil {
 		return nil, fmt.Errorf("database failed to prepare context: %w", err)
 	}
 
-	preparedStmts[deleteInvestment], err = db.PrepareContext(ctx, stmtDeleteInvestment)
+	preparedStmts[preparedDeleteInvestment], err = db.PrepareContext(ctx, stmtDeleteInvestment)
 	if err != nil {
 		return nil, fmt.Errorf("database failed to prepare context: %w", err)
 	}
@@ -58,10 +62,10 @@ func (r *repo) GetInvestments(ctx context.Context) ([]Investment, error) {
 		investment := Investment{}
 
 		if err := rows.Scan(
-			&investment.id,
-			&investment.amount,
-			&investment.date,
-			&investment.source,
+			&investment.ID,
+			&investment.Amount,
+			&investment.Date,
+			&investment.Source,
 		); err != nil {
 			return nil, fmt.Errorf("database failed to scan rows: %w", err)
 		}
@@ -76,12 +80,12 @@ func (r *repo) GetInvestments(ctx context.Context) ([]Investment, error) {
 }
 
 func (r *repo) CreateInvestment(ctx context.Context, investment Investment) error {
-	if _, err := r.preparedStmts[stmtCreateInvestment].ExecContext(
+	if _, err := r.preparedStmts[preparedCreateInvestment].ExecContext(
 		ctx,
-		investment.id,
-		investment.amount,
-		investment.date,
-		investment.source,
+		investment.ID,
+		investment.Amount,
+		investment.Date,
+		investment.Source,
 	); err != nil {
 		return fmt.Errorf("database failed to exec: %w", err)
 	}
@@ -90,7 +94,7 @@ func (r *repo) CreateInvestment(ctx context.Context, investment Investment) erro
 }
 
 func (r *repo) DeleteInvestment(ctx context.Context, id string) error {
-	if _, err := r.preparedStmts[stmtDeleteInvestment].ExecContext(
+	if _, err := r.preparedStmts[preparedDeleteInvestment].ExecContext(
 		ctx,
 		id,
 	); err != nil {

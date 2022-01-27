@@ -1,8 +1,8 @@
 package invest
 
 type Investment struct {
-	id     string
-	amount int64
-	date   string
-	source string
+	ID     string
+	Amount int64
+	Date   string
+	Source string
 }
