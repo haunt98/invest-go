@@ -1,0 +1,101 @@
+package invest
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+)
+
+const (
+	createInvestment = "createInvestment"
+	deleteInvestment = "deleteInvestment"
+
+	stmtGetInvestments   = "SELECT id, amount, date, source FROM investments"
+	stmtCreateInvestment = "INSERT INTO investments (id, amount, date, source) VALUES (?, ?, ?, ?)"
+	stmtDeleteInvestment = "DELETE FROM investment WHERE id = ?"
+)
+
+type Repository interface{}
+
+type repo struct {
+	db *sql.DB
+
+	// Prepared statements
+	// https://go.dev/doc/database/prepared-statements
+	preparedStmts map[string]*sql.Stmt
+}
+
+func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
+	preparedStmts := make(map[string]*sql.Stmt)
+
+	var err error
+	preparedStmts[createInvestment], err = db.PrepareContext(ctx, stmtCreateInvestment)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
+
+	preparedStmts[deleteInvestment], err = db.PrepareContext(ctx, stmtDeleteInvestment)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
+
+	return &repo{
+		db:            db,
+		preparedStmts: preparedStmts,
+	}, nil
+}
+
+func (r *repo) GetInvestments(ctx context.Context) ([]Investment, error) {
+	investments := make([]Investment, 0, 16)
+
+	rows, err := r.db.QueryContext(ctx, stmtGetInvestments)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to query: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		investment := Investment{}
+
+		if err := rows.Scan(
+			&investment.id,
+			&investment.amount,
+			&investment.date,
+			&investment.source,
+		); err != nil {
+			return nil, fmt.Errorf("database failed to scan rows: %w", err)
+		}
+
+		investments = append(investments, investment)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("database failed to scan rows: %w", err)
+	}
+
+	return investments, nil
+}
+
+func (r *repo) CreateInvestment(ctx context.Context, investment Investment) error {
+	if _, err := r.preparedStmts[stmtCreateInvestment].ExecContext(
+		ctx,
+		investment.id,
+		investment.amount,
+		investment.date,
+		investment.source,
+	); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
+}
+
+func (r *repo) DeleteInvestment(ctx context.Context, id string) error {
+	if _, err := r.preparedStmts[stmtDeleteInvestment].ExecContext(
+		ctx,
+		id,
+	); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
+}

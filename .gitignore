@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Window
+*.exe
+
+# IntelliJ
+.idea/
+
+# VSCode
+.vscode/
+
+# Database
+sql/data.sqlite3
