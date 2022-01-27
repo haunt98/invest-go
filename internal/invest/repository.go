@@ -12,7 +12,7 @@ const (
 
 	stmtGetInvestments   = "SELECT id, amount, date, source FROM investments"
 	stmtCreateInvestment = "INSERT INTO investments (id, amount, date, source) VALUES (?, ?, ?, ?)"
-	stmtDeleteInvestment = "DELETE FROM investment WHERE id = ?"
+	stmtDeleteInvestment = "DELETE FROM investments WHERE id = ?"
 )
 
 type Repository interface {
