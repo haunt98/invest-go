@@ -2,13 +2,13 @@ package invest
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 type Handler interface {
+	Init(ctx context.Context) error
 	List(ctx context.Context) error
 	Add(ctx context.Context, investment Investment) error
 	Remove(ctx context.Context, id string) error
@@ -24,10 +24,14 @@ func NewHandler(service Service) *handler {
 	}
 }
 
+func (h *handler) Init(ctx context.Context) error {
+	return h.service.Init(ctx)
+}
+
 func (h *handler) List(ctx context.Context) error {
 	investments, err := h.service.List(ctx)
 	if err != nil {
-		return fmt.Errorf("service failed to list: %w", err)
+		return err
 	}
 
 	// https://github.com/jedib0t/go-pretty/tree/main/table

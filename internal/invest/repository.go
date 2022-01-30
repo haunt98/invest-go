@@ -10,12 +10,14 @@ const (
 	preparedCreateInvestment = "createInvestment"
 	preparedDeleteInvestment = "deleteInvestment"
 
+	stmtInitInvestments  = "CREATE TABLE investments (id TEXT PRIMARY KEY, amount INTEGER NOT NULL, date TEXT NOT NULL, source TEXT NOT NULL)"
 	stmtGetInvestments   = "SELECT id, amount, date, source FROM investments"
 	stmtCreateInvestment = "INSERT INTO investments (id, amount, date, source) VALUES (?, ?, ?, ?)"
 	stmtDeleteInvestment = "DELETE FROM investments WHERE id = ?"
 )
 
 type Repository interface {
+	InitInvestments(ctx context.Context) error
 	GetInvestments(ctx context.Context) ([]Investment, error)
 	CreateInvestment(ctx context.Context, investment Investment) error
 	DeleteInvestment(ctx context.Context, id string) error
@@ -47,6 +49,14 @@ func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
 		db:            db,
 		preparedStmts: preparedStmts,
 	}, nil
+}
+
+func (r *repo) InitInvestments(ctx context.Context) error {
+	if _, err := r.db.ExecContext(ctx, stmtInitInvestments); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
 }
 
 func (r *repo) GetInvestments(ctx context.Context) ([]Investment, error) {
