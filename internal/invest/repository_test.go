@@ -41,6 +41,22 @@ func TestRepoSuite(t *testing.T) {
 	suite.Run(t, new(RepoSuite))
 }
 
+func (s *RepoSuite) TestInitInvestmentsSuccess() {
+	s.dbMock.ExpectExec(stmtInitInvestments).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	gotErr := s.repo.InitInvestments(context.Background())
+	s.NoError(gotErr)
+}
+
+func (s *RepoSuite) TestInitInvestmentsFailedDatabase() {
+	s.dbMock.ExpectExec(stmtInitInvestments).
+		WillReturnError(errors.New("failed"))
+
+	gotErr := s.repo.InitInvestments(context.Background())
+	s.Error(gotErr)
+}
+
 func (s *RepoSuite) TestGetInvestmentsSuccess() {
 	investments := []Investment{
 		{
