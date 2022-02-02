@@ -7,6 +7,6 @@ Tracking investment.
 - [x] List, add, remove investment
 - [x] Init database
 - [x] Save database in OS path
-- [ ] Import/export JSON
+- [x] Import/export JSON
 - [ ] Documentation
 - [ ] Unit test
