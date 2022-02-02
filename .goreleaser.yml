@@ -1,0 +1,15 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/invest
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+universal_binaries:
+  - replace: true
+changelog:
+  skip: true
