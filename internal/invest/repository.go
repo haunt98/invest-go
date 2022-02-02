@@ -17,7 +17,6 @@ const (
 )
 
 type Repository interface {
-	InitInvestments(ctx context.Context) error
 	GetInvestments(ctx context.Context) ([]Investment, error)
 	CreateInvestment(ctx context.Context, investment Investment) error
 	DeleteInvestment(ctx context.Context, id string) error
@@ -31,7 +30,13 @@ type repo struct {
 	preparedStmts map[string]*sql.Stmt
 }
 
-func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
+func NewRepository(ctx context.Context, db *sql.DB, shouldInitDatabase bool) (Repository, error) {
+	if shouldInitDatabase {
+		if _, err := db.ExecContext(ctx, stmtInitInvestments); err != nil {
+			return nil, fmt.Errorf("database failed to exec: %w", err)
+		}
+	}
+
 	preparedStmts := make(map[string]*sql.Stmt)
 
 	var err error
@@ -49,14 +54,6 @@ func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
 		db:            db,
 		preparedStmts: preparedStmts,
 	}, nil
-}
-
-func (r *repo) InitInvestments(ctx context.Context) error {
-	if _, err := r.db.ExecContext(ctx, stmtInitInvestments); err != nil {
-		return fmt.Errorf("database failed to exec: %w", err)
-	}
-
-	return nil
 }
 
 func (r *repo) GetInvestments(ctx context.Context) ([]Investment, error) {

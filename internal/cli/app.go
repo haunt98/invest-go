@@ -42,8 +42,8 @@ type App struct {
 	cliApp *cli.App
 }
 
-func NewApp(db *sql.DB, location *time.Location) (*App, error) {
-	investRepo, err := invest.NewRepository(context.Background(), db)
+func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App, error) {
+	investRepo, err := invest.NewRepository(context.Background(), db, shouldInitDatabase)
 	if err != nil {
 		return nil, fmt.Errorf("failed to new repository: %w", err)
 	}

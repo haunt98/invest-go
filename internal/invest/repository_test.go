@@ -33,28 +33,12 @@ func (s *RepoSuite) SetupTest() {
 	s.preparedStmts[preparedCreateInvestment] = s.dbMock.ExpectPrepare(stmtCreateInvestment)
 	s.preparedStmts[preparedDeleteInvestment] = s.dbMock.ExpectPrepare(stmtDeleteInvestment)
 
-	s.repo, err = NewRepository(context.Background(), s.db)
+	s.repo, err = NewRepository(context.Background(), s.db, false)
 	s.NoError(err)
 }
 
 func TestRepoSuite(t *testing.T) {
 	suite.Run(t, new(RepoSuite))
-}
-
-func (s *RepoSuite) TestInitInvestmentsSuccess() {
-	s.dbMock.ExpectExec(stmtInitInvestments).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
-	gotErr := s.repo.InitInvestments(context.Background())
-	s.NoError(gotErr)
-}
-
-func (s *RepoSuite) TestInitInvestmentsFailedDatabase() {
-	s.dbMock.ExpectExec(stmtInitInvestments).
-		WillReturnError(errors.New("failed"))
-
-	gotErr := s.repo.InitInvestments(context.Background())
-	s.Error(gotErr)
 }
 
 func (s *RepoSuite) TestGetInvestmentsSuccess() {

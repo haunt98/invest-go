@@ -10,7 +10,6 @@ import (
 )
 
 type Service interface {
-	Init(ctx context.Context) error
 	List(ctx context.Context) ([]Investment, error)
 	Add(ctx context.Context, investment Investment) error
 	Remove(ctx context.Context, id string) error
@@ -29,14 +28,6 @@ func NewService(
 		repo:     repo,
 		location: location,
 	}
-}
-
-func (s *service) Init(ctx context.Context) error {
-	if err := s.repo.InitInvestments(ctx); err != nil {
-		return fmt.Errorf("repository failed to init investments: %w", err)
-	}
-
-	return nil
 }
 
 func (s *service) List(ctx context.Context) ([]Investment, error) {

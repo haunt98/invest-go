@@ -8,7 +8,6 @@ import (
 )
 
 type Handler interface {
-	Init(ctx context.Context) error
 	List(ctx context.Context) error
 	Add(ctx context.Context, investment Investment) error
 	Remove(ctx context.Context, id string) error
@@ -22,10 +21,6 @@ func NewHandler(service Service) *handler {
 	return &handler{
 		service: service,
 	}
-}
-
-func (h *handler) Init(ctx context.Context) error {
-	return h.service.Init(ctx)
 }
 
 func (h *handler) List(ctx context.Context) error {
