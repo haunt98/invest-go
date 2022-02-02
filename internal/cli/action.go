@@ -15,6 +15,9 @@ type action struct {
 		amount int64
 		date   string
 		source string
+
+		// Export, import
+		filename string
 	}
 
 	investHandler invest.Handler
@@ -44,10 +47,23 @@ func (a *action) RunRemove(c *cli.Context) error {
 	return a.investHandler.Remove(c.Context, a.flags.id)
 }
 
+func (a *action) RunExport(c *cli.Context) error {
+	a.getFlags(c)
+
+	return a.investHandler.Export(c.Context, a.flags.filename)
+}
+
+func (a *action) RunImport(c *cli.Context) error {
+	a.getFlags(c)
+
+	return a.investHandler.Import(c.Context, a.flags.filename)
+}
+
 func (a *action) getFlags(c *cli.Context) {
 	a.flags.verbose = c.Bool(flagVerbose)
 	a.flags.id = c.String(flagID)
 	a.flags.amount = c.Int64(flagAmount)
 	a.flags.date = c.String(flagDate)
 	a.flags.source = c.String(flagSource)
+	a.flags.filename = c.String(flagFilename)
 }

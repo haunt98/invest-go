@@ -48,7 +48,9 @@ func (s *service) List(ctx context.Context) ([]Investment, error) {
 }
 
 func (s *service) Add(ctx context.Context, investment Investment) error {
-	investment.ID = uuid.NewString()
+	if investment.ID == "" {
+		investment.ID = uuid.NewString()
+	}
 
 	if !validateInvestment(investment) {
 		return fmt.Errorf("investment %+v not valid", investment)

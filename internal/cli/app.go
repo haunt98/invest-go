@@ -19,21 +19,27 @@ const (
 	commandList   = "list"
 	commandAdd    = "add"
 	commandRemove = "remove"
+	commandExport = "export"
+	commandImport = "import"
 
-	flagVerbose = "verbose"
-	flagID      = "id"
-	flagAmount  = "amount"
-	flagDate    = "date"
-	flagSource  = "source"
+	flagVerbose  = "verbose"
+	flagID       = "id"
+	flagAmount   = "amount"
+	flagDate     = "date"
+	flagSource   = "source"
+	flagFilename = "filename"
 
-	usageList    = "list all investments"
-	usageAdd     = "add investment"
-	usageRemove  = "remove investment"
-	usageVerbose = "debug"
-	usageID      = "id of investment"
-	usageAmount  = "amount of investment"
-	usageDate    = "date of investment, example 2022-12-31"
-	usageSource  = "source of investment"
+	usageList     = "list all investments"
+	usageAdd      = "add investment"
+	usageRemove   = "remove investment"
+	usageExport   = "export data"
+	usageImport   = "import data"
+	usageVerbose  = "debug"
+	usageID       = "id of investment"
+	usageAmount   = "amount of investment"
+	usageDate     = "date of investment, example 2022-12-31"
+	usageSource   = "source of investment"
+	usageFilename = "filename to export/import"
 )
 
 var aliasesVerbose = []string{"v"}
@@ -104,6 +110,40 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 					&cli.StringFlag{
 						Name:     flagID,
 						Usage:    usageID,
+						Required: true,
+					},
+				},
+			},
+			{
+				Name:   commandExport,
+				Usage:  usageExport,
+				Action: a.RunExport,
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:    flagVerbose,
+						Aliases: aliasesVerbose,
+						Usage:   usageVerbose,
+					},
+					&cli.StringFlag{
+						Name:     flagFilename,
+						Usage:    usageFilename,
+						Required: true,
+					},
+				},
+			},
+			{
+				Name:   commandImport,
+				Usage:  usageImport,
+				Action: a.RunImport,
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:    flagVerbose,
+						Aliases: aliasesVerbose,
+						Usage:   usageVerbose,
+					},
+					&cli.StringFlag{
+						Name:     flagFilename,
+						Usage:    usageFilename,
 						Required: true,
 					},
 				},
