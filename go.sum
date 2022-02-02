@@ -14,6 +14,8 @@ github.com/jedib0t/go-pretty/v6 v6.2.5 h1:4faq6Fne+0du3qZAPOJcBFpAnt4AlxUJAKa1vA
 github.com/jedib0t/go-pretty/v6 v6.2.5/go.mod h1:FMkOpgGD3EZ91cW8g/96RfxoV7bdeJyzXPYgz1L1ln0=
 github.com/make-go-great/color-go v0.3.0 h1:ZVtVk/wVVsZZwSJG7PZpsY5zwIyGao5VoN48yKfSzYA=
 github.com/make-go-great/color-go v0.3.0/go.mod h1:G5G8IJ3PUo+vSQ+UvnfaswF8O/piVIhFJKv1mQjBGpI=
+github.com/make-go-great/xdg-go v0.2.1 h1:LHVoHlkZcXGoqIOSHLqChV/eCyue1K4KxYdzk1lPukk=
+github.com/make-go-great/xdg-go v0.2.1/go.mod h1:5nyVM+7+76Kcj3Vr1ebc06Zz1JaB3LdHr5eV6NyEK8Q=
 github.com/mattn/go-colorable v0.1.9 h1:sqDoxXbdeALODt0DAeJCVp38ps9ZogZEAXjus69YV3U=
 github.com/mattn/go-colorable v0.1.9/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Kysco4FUpU=

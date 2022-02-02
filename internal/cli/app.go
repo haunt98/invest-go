@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	name  = "invest"
+	Name  = "invest"
 	usage = "tracking invest money"
 
 	commandList   = "list"
@@ -55,7 +55,7 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 	}
 
 	cliApp := &cli.App{
-		Name:   name,
+		Name:   Name,
 		Usage:  usage,
 		Action: a.RunHelp,
 		Commands: []*cli.Command{
@@ -118,6 +118,6 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 
 func (a *App) Run() {
 	if err := a.cliApp.Run(os.Args); err != nil {
-		color.PrintAppError(name, err.Error())
+		color.PrintAppError(Name, err.Error())
 	}
 }

@@ -5,15 +5,23 @@ import (
 	"errors"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/haunt98/invest-go/internal/cli"
+	"github.com/make-go-great/xdg-go"
 	_ "github.com/mattn/go-sqlite3"
 )
 
+const dataFilename = "data.sqlite3"
+
 func main() {
+	if err := os.MkdirAll(getDataDirPath(), 0755); err != nil {
+		log.Fatalln(err)
+	}
+
 	shouldInitDatabase := false
-	if _, err := os.Stat("./sql/data.sqlite3"); err != nil {
+	if _, err := os.Stat(getDataFilePath()); err != nil {
 		if errors.Is(err, os.ErrNotExist) {
 			shouldInitDatabase = true
 		} else {
@@ -21,7 +29,7 @@ func main() {
 		}
 	}
 
-	db, err := sql.Open("sqlite3", "./sql/data.sqlite3")
+	db, err := sql.Open("sqlite3", getDataFilePath())
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -39,4 +47,14 @@ func main() {
 	}
 
 	app.Run()
+}
+
+// Should be ~/.local/share/invest
+func getDataDirPath() string {
+	return filepath.Join(xdg.GetDataHome(), cli.Name)
+}
+
+// Shoulde be ~/.local/share/invest/data.sqlite3
+func getDataFilePath() string {
+	return filepath.Join(xdg.GetDataHome(), cli.Name, dataFilename)
 }
