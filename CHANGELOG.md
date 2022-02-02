@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.2.0 (2022-02-02)
+
+### Added
+
+- feat: add export/import cmd (2022-02-02)
+
+### Others
+
+- chore: unit test for init database (2022-02-02)
+
+- chore(changelog): re-gen (2022-02-02)
+
 ## v0.1.1 (2022-02-02)
 
 ### Others
