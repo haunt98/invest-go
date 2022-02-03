@@ -8,7 +8,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.2.5
 	github.com/make-go-great/color-go v0.3.0
 	github.com/make-go-great/xdg-go v0.2.1
-	github.com/mattn/go-sqlite3 v1.14.10
+	github.com/mattn/go-sqlite3 v1.14.11
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
 )
