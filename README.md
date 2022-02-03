@@ -13,6 +13,7 @@ Tracking investment.
 - [x] Init database
 - [x] Save database in OS path
 - [x] Import/export JSON
+- [ ] Interactive mode
 - [ ] Documentation
 - [ ] Unit test
 
