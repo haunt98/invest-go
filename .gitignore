@@ -11,4 +11,5 @@
 .vscode/
 
 # Database
-sql/data.sqlite3
+*.sql
+*.sqlite3
