@@ -10,10 +10,31 @@ const (
 	preparedCreateInvestment = "createInvestment"
 	preparedDeleteInvestment = "deleteInvestment"
 
-	stmtInitInvestments  = "CREATE TABLE investments (id TEXT PRIMARY KEY, amount INTEGER NOT NULL, date TEXT NOT NULL, source TEXT NOT NULL)"
-	stmtGetInvestments   = "SELECT id, amount, date, source FROM investments"
-	stmtCreateInvestment = "INSERT INTO investments (id, amount, date, source) VALUES (?, ?, ?, ?)"
-	stmtDeleteInvestment = "DELETE FROM investments WHERE id = ?"
+	stmtInitInvestments = `
+	CREATE TABLE investments
+	(
+		id     TEXT PRIMARY KEY,
+		amount INTEGER NOT NULL,
+		date   TEXT    NOT NULL,
+		source TEXT    NOT NULL
+	)
+`
+
+	stmtGetInvestments = `
+	SELECT id, amount, date, source
+	FROM investments
+`
+
+	stmtCreateInvestment = `
+	INSERT INTO investments (id, amount, date, source)
+	VALUES (?, ?, ?, ?)
+`
+
+	stmtDeleteInvestment = `
+	DELETE
+	FROM investments
+	WHERE id = ?
+`
 )
 
 type Repository interface {
