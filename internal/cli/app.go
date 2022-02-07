@@ -22,27 +22,32 @@ const (
 	commandExport = "export"
 	commandImport = "import"
 
-	flagVerbose  = "verbose"
-	flagID       = "id"
-	flagAmount   = "amount"
-	flagDate     = "date"
-	flagSource   = "source"
-	flagFilename = "filename"
+	flagVerbose     = "verbose"
+	flagID          = "id"
+	flagAmount      = "amount"
+	flagDate        = "date"
+	flagSource      = "source"
+	flagFilename    = "filename"
+	flagInteractive = "interactive"
 
-	usageList     = "list all investments"
-	usageAdd      = "add investment"
-	usageRemove   = "remove investment"
-	usageExport   = "export data"
-	usageImport   = "import data"
-	usageVerbose  = "debug"
-	usageID       = "id of investment"
-	usageAmount   = "amount of investment"
-	usageDate     = "date of investment, example 2022-12-31"
-	usageSource   = "source of investment"
-	usageFilename = "filename to export/import"
+	usageList        = "list all investments"
+	usageAdd         = "add investment"
+	usageRemove      = "remove investment"
+	usageExport      = "export data"
+	usageImport      = "import data"
+	usageVerbose     = "debug"
+	usageID          = "id of investment"
+	usageAmount      = "amount of investment"
+	usageDate        = "date of investment, example 2022-12-31"
+	usageSource      = "source of investment"
+	usageFilename    = "filename to export/import"
+	usageInteractive = "interactive mode"
 )
 
-var aliasesVerbose = []string{"v"}
+var (
+	aliasVerbose     = []string{"v"}
+	aliasInteractive = []string{"i"}
+)
 
 type App struct {
 	cliApp *cli.App
@@ -77,23 +82,25 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:    flagVerbose,
-						Aliases: aliasesVerbose,
+						Aliases: aliasVerbose,
 						Usage:   usageVerbose,
 					},
 					&cli.Int64Flag{
-						Name:     flagAmount,
-						Usage:    usageAmount,
-						Required: true,
+						Name:  flagAmount,
+						Usage: usageAmount,
 					},
 					&cli.StringFlag{
-						Name:     flagDate,
-						Usage:    usageDate,
-						Required: true,
+						Name:  flagDate,
+						Usage: usageDate,
 					},
 					&cli.StringFlag{
-						Name:     flagSource,
-						Usage:    usageSource,
-						Required: true,
+						Name:  flagSource,
+						Usage: usageSource,
+					},
+					&cli.BoolFlag{
+						Name:    flagInteractive,
+						Usage:   usageInteractive,
+						Aliases: aliasInteractive,
 					},
 				},
 			},
@@ -104,13 +111,17 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:    flagVerbose,
-						Aliases: aliasesVerbose,
+						Aliases: aliasVerbose,
 						Usage:   usageVerbose,
 					},
 					&cli.StringFlag{
-						Name:     flagID,
-						Usage:    usageID,
-						Required: true,
+						Name:  flagID,
+						Usage: usageID,
+					},
+					&cli.BoolFlag{
+						Name:    flagInteractive,
+						Usage:   usageInteractive,
+						Aliases: aliasInteractive,
 					},
 				},
 			},
@@ -121,7 +132,7 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:    flagVerbose,
-						Aliases: aliasesVerbose,
+						Aliases: aliasVerbose,
 						Usage:   usageVerbose,
 					},
 					&cli.StringFlag{
@@ -138,7 +149,7 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
 						Name:    flagVerbose,
-						Aliases: aliasesVerbose,
+						Aliases: aliasVerbose,
 						Usage:   usageVerbose,
 					},
 					&cli.StringFlag{
