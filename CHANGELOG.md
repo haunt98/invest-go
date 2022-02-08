@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## v0.3.0 (2022-02-07)
+
+### Added
+
+- feat: init interactive mode (2022-02-07)
+
+### Others
+
+- chore: update roadmap (2022-02-07)
+
+- chore: sonar ignore cli (2022-02-07)
+
+- build: run go get -u ./... (2022-02-05)
+
+- chore: format smtm sql with DataGrip (2022-02-05)
+
+- chore: update gitignore for sql (2022-02-05)
+
+- chore: update roadmap (2022-02-03)
+
+- chore: add sonar badge (2022-02-03)
+
+- chore: add sonar to github action (2022-02-03)
+
+- chore: add sonar-project.properties (2022-02-03)
+
+- build: bump github.com/mattn/go-sqlite3 v1.14.11 (2022-02-03)
+
+- chore: add badges (2022-02-03)
+
+- chore: add codecov in github action (2022-02-03)
+
+- chore: update roadmap (2022-02-02)
+
+- chore(changelog): generate v0.2.0 (2022-02-02)
+
 ## v0.2.0 (2022-02-02)
 
 ### Added
