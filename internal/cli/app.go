@@ -22,7 +22,6 @@ const (
 	commandExport = "export"
 	commandImport = "import"
 
-	flagVerbose     = "verbose"
 	flagID          = "id"
 	flagAmount      = "amount"
 	flagDate        = "date"
@@ -44,10 +43,7 @@ const (
 	usageInteractive = "interactive mode"
 )
 
-var (
-	aliasVerbose     = []string{"v"}
-	aliasInteractive = []string{"i"}
-)
+var aliasInteractive = []string{"i"}
 
 type App struct {
 	cliApp *cli.App
@@ -80,11 +76,6 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Usage:  usageAdd,
 				Action: a.RunAdd,
 				Flags: []cli.Flag{
-					&cli.BoolFlag{
-						Name:    flagVerbose,
-						Aliases: aliasVerbose,
-						Usage:   usageVerbose,
-					},
 					&cli.Int64Flag{
 						Name:  flagAmount,
 						Usage: usageAmount,
@@ -109,11 +100,6 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Usage:  usageRemove,
 				Action: a.RunRemove,
 				Flags: []cli.Flag{
-					&cli.BoolFlag{
-						Name:    flagVerbose,
-						Aliases: aliasVerbose,
-						Usage:   usageVerbose,
-					},
 					&cli.StringFlag{
 						Name:  flagID,
 						Usage: usageID,
@@ -130,11 +116,6 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Usage:  usageExport,
 				Action: a.RunExport,
 				Flags: []cli.Flag{
-					&cli.BoolFlag{
-						Name:    flagVerbose,
-						Aliases: aliasVerbose,
-						Usage:   usageVerbose,
-					},
 					&cli.StringFlag{
 						Name:     flagFilename,
 						Usage:    usageFilename,
@@ -147,11 +128,6 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Usage:  usageImport,
 				Action: a.RunImport,
 				Flags: []cli.Flag{
-					&cli.BoolFlag{
-						Name:    flagVerbose,
-						Aliases: aliasVerbose,
-						Usage:   usageVerbose,
-					},
 					&cli.StringFlag{
 						Name:     flagFilename,
 						Usage:    usageFilename,

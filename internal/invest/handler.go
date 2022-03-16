@@ -7,12 +7,14 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/make-go-great/ioe-go"
+	"github.com/spf13/cast"
 )
 
 type Handler interface {
 	List(ctx context.Context) error
-	Add(ctx context.Context, investment Investment) error
-	Remove(ctx context.Context, id string) error
+	Add(ctx context.Context, investment Investment, interactive bool) error
+	Remove(ctx context.Context, id string, interactive bool) error
 	Export(ctx context.Context, filename string) error
 	Import(ctx context.Context, filename string) error
 }
@@ -21,7 +23,7 @@ type handler struct {
 	service Service
 }
 
-func NewHandler(service Service) *handler {
+func NewHandler(service Service) Handler {
 	return &handler{
 		service: service,
 	}
@@ -65,11 +67,27 @@ func (h *handler) List(ctx context.Context) error {
 	return nil
 }
 
-func (h *handler) Add(ctx context.Context, investment Investment) error {
+func (h *handler) Add(ctx context.Context, investment Investment, interactive bool) error {
+	if interactive {
+		fmt.Printf("Input amount: ")
+		investment.Amount = cast.ToInt64(ioe.ReadInput())
+
+		fmt.Printf("Input date: ")
+		investment.Date = ioe.ReadInput()
+
+		fmt.Printf("Input source: ")
+		investment.Source = ioe.ReadInput()
+	}
+
 	return h.service.Add(ctx, investment)
 }
 
-func (h *handler) Remove(ctx context.Context, id string) error {
+func (h *handler) Remove(ctx context.Context, id string, interactive bool) error {
+	if interactive {
+		fmt.Printf("Input ID: ")
+		id = ioe.ReadInput()
+	}
+
 	return h.service.Remove(ctx, id)
 }
 
@@ -88,7 +106,7 @@ func (h *handler) Export(ctx context.Context, filename string) error {
 		return fmt.Errorf("json failed to marshal indent: %w", err)
 	}
 
-	if err := os.WriteFile(filename, bytes, 0755); err != nil {
+	if err := os.WriteFile(filename, bytes, 0o755); err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
 
