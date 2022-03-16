@@ -17,6 +17,7 @@ Tracking investment.
 - [ ] Support Windows
 - [ ] Documentation
 - [ ] Unit test
+- [ ] Make interactive default true
 
 ## Install
 
