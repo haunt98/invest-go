@@ -16,7 +16,7 @@ import (
 const dataFilename = "data.sqlite3"
 
 func main() {
-	if err := os.MkdirAll(getDataDirPath(), 0755); err != nil {
+	if err := os.MkdirAll(getDataDirPath(), 0o755); err != nil {
 		log.Fatalln(err)
 	}
 
@@ -54,7 +54,7 @@ func getDataDirPath() string {
 	return filepath.Join(xdg.GetDataHome(), cli.Name)
 }
 
-// Shoulde be ~/.local/share/invest/data.sqlite3
+// Should be ~/.local/share/invest/data.sqlite3
 func getDataFilePath() string {
 	return filepath.Join(xdg.GetDataHome(), cli.Name, dataFilename)
 }
