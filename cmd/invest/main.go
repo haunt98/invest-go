@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,15 +19,6 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	shouldInitDatabase := false
-	if _, err := os.Stat(getDataFilePath()); err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			shouldInitDatabase = true
-		} else {
-			log.Fatalln(err)
-		}
-	}
-
 	db, err := sql.Open("sqlite3", getDataFilePath())
 	if err != nil {
 		log.Fatalln(err)
@@ -41,7 +31,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	app, err := cli.NewApp(db, shouldInitDatabase, location)
+	app, err := cli.NewApp(db, location)
 	if err != nil {
 		log.Fatalln(err)
 	}

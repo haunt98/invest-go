@@ -11,7 +11,7 @@ const (
 	preparedDeleteInvestment = "deleteInvestment"
 
 	stmtInitInvestments = `
-CREATE TABLE investments
+CREATE TABLE IF NOT EXISTS investments
 (
     id     TEXT PRIMARY KEY,
     amount INTEGER NOT NULL,
@@ -19,17 +19,14 @@ CREATE TABLE investments
     source TEXT    NOT NULL
 )
 `
-
 	stmtGetInvestments = `
 SELECT id, amount, date, source
 FROM investments
 `
-
 	stmtCreateInvestment = `
 INSERT INTO investments (id, amount, date, source)
 VALUES (?, ?, ?, ?)
 `
-
 	stmtDeleteInvestment = `
 DELETE
 FROM investments
@@ -51,11 +48,9 @@ type repo struct {
 	preparedStmts map[string]*sql.Stmt
 }
 
-func NewRepository(ctx context.Context, db *sql.DB, shouldInitDatabase bool) (Repository, error) {
-	if shouldInitDatabase {
-		if _, err := db.ExecContext(ctx, stmtInitInvestments); err != nil {
-			return nil, fmt.Errorf("database failed to exec: %w", err)
-		}
+func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
+	if _, err := db.ExecContext(ctx, stmtInitInvestments); err != nil {
+		return nil, fmt.Errorf("database failed to exec: %w", err)
 	}
 
 	preparedStmts := make(map[string]*sql.Stmt)

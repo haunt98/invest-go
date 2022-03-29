@@ -29,30 +29,19 @@ func (s *RepoSuite) SetupTest() {
 	s.dbMock = dbMock
 	s.columns = []string{"id", "amount", "date", "source"}
 
+	dbMock.ExpectExec(stmtInitInvestments).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
 	s.preparedStmts = make(map[string]*sqlmock.ExpectedPrepare)
 	s.preparedStmts[preparedCreateInvestment] = s.dbMock.ExpectPrepare(stmtCreateInvestment)
 	s.preparedStmts[preparedDeleteInvestment] = s.dbMock.ExpectPrepare(stmtDeleteInvestment)
 
-	s.repo, err = NewRepository(context.Background(), s.db, false)
+	s.repo, err = NewRepository(context.Background(), s.db)
 	s.NoError(err)
 }
 
 func TestRepoSuite(t *testing.T) {
 	suite.Run(t, new(RepoSuite))
-}
-
-func (s *RepoSuite) TestInitDatabaseSuccess() {
-	db, dbMock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
-	s.NoError(err)
-
-	dbMock.ExpectExec(stmtInitInvestments).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-
-	dbMock.ExpectPrepare(stmtCreateInvestment)
-	dbMock.ExpectPrepare(stmtDeleteInvestment)
-
-	_, err = NewRepository(context.Background(), db, true)
-	s.NoError(err)
 }
 
 func (s *RepoSuite) TestInitDatabaseFailed() {
@@ -62,7 +51,7 @@ func (s *RepoSuite) TestInitDatabaseFailed() {
 	dbMock.ExpectExec(stmtInitInvestments).
 		WillReturnError(errors.New("failed"))
 
-	_, err = NewRepository(context.Background(), db, true)
+	_, err = NewRepository(context.Background(), db)
 	s.Error(err)
 }
 
