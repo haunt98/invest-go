@@ -34,7 +34,6 @@ const (
 	usageRemove      = "remove investment"
 	usageExport      = "export data"
 	usageImport      = "import data"
-	usageVerbose     = "debug"
 	usageID          = "id of investment"
 	usageAmount      = "amount of investment"
 	usageDate        = "date of investment, example 2022-12-31"
