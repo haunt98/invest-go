@@ -18,6 +18,7 @@ Tracking investment.
 - [ ] Documentation
 - [ ] Unit test
 - [ ] Make interactive default true
+- [ ] Improve date input
 
 ## Install
 
