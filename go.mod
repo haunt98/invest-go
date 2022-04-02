@@ -5,14 +5,14 @@ go 1.18
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/google/uuid v1.3.0
-	github.com/jedib0t/go-pretty/v6 v6.2.5
+	github.com/jedib0t/go-pretty/v6 v6.3.0
 	github.com/make-go-great/color-go v0.3.0
 	github.com/make-go-great/ioe-go v0.4.0
 	github.com/make-go-great/xdg-go v0.2.1
-	github.com/mattn/go-sqlite3 v1.14.11
+	github.com/mattn/go-sqlite3 v1.14.12
 	github.com/spf13/cast v1.4.1
 	github.com/stretchr/testify v1.7.0
-	github.com/urfave/cli/v2 v2.3.0
+	github.com/urfave/cli/v2 v2.4.0
 )
 
 require (
@@ -25,6 +25,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a // indirect
+	golang.org/x/sys v0.0.0-20220330033206-e17cdc41300f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
