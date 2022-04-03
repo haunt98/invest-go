@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/make-go-great/date-go"
 )
 
 type Service interface {
@@ -38,7 +39,7 @@ func (s *service) List(ctx context.Context) ([]Investment, error) {
 
 	// Simple date format to output
 	for i := range investments {
-		investments[i].Date, err = dateToOutput(investments[i].Date, s.location)
+		investments[i].Date, err = date.FromRFC3339(investments[i].Date, s.location)
 		if err != nil {
 			return nil, err
 		}
@@ -58,7 +59,7 @@ func (s *service) Add(ctx context.Context, investment Investment) error {
 
 	// Better date format from input
 	var err error
-	investment.Date, err = dateFromInput(investment.Date, s.location)
+	investment.Date, err = date.ToRFC3339(investment.Date, s.location)
 	if err != nil {
 		return err
 	}
