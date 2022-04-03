@@ -32,8 +32,6 @@ const (
 	usageFilename = "filename to export/import"
 )
 
-var aliasInteractive = []string{"i"}
-
 type App struct {
 	cliApp *cli.App
 }
