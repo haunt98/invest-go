@@ -7,14 +7,15 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/make-go-great/date-go"
 	"github.com/make-go-great/ioe-go"
 	"github.com/spf13/cast"
 )
 
 type Handler interface {
 	List(ctx context.Context) error
-	Add(ctx context.Context, investment Investment, interactive bool) error
-	Remove(ctx context.Context, id string, interactive bool) error
+	Add(ctx context.Context) error
+	Remove(ctx context.Context) error
 	Export(ctx context.Context, filename string) error
 	Import(ctx context.Context, filename string) error
 }
@@ -67,31 +68,34 @@ func (h *handler) List(ctx context.Context) error {
 	return nil
 }
 
-func (h *handler) Add(ctx context.Context, investment Investment, interactive bool) error {
-	if interactive {
-		fmt.Printf("Input amount: ")
-		investment.Amount = cast.ToInt64(ioe.ReadInput())
+func (h *handler) Add(ctx context.Context) error {
+	investment := Investment{}
 
-		fmt.Printf("Input date: ")
-		investment.Date = ioe.ReadInput()
+	fmt.Printf("Input amount: ")
+	investment.Amount = cast.ToInt64(ioe.ReadInput())
 
-		fmt.Printf("Input source: ")
-		investment.Source = ioe.ReadInput()
-	}
+	fmt.Printf("Input date (example %s): ", date.SupportDateFormats())
+	investment.Date = ioe.ReadInput()
+
+	fmt.Printf("Input source: ")
+	investment.Source = ioe.ReadInput()
 
 	return h.service.Add(ctx, investment)
 }
 
-func (h *handler) Remove(ctx context.Context, id string, interactive bool) error {
-	if interactive {
-		fmt.Printf("Input ID: ")
-		id = ioe.ReadInput()
-	}
+func (h *handler) Remove(ctx context.Context) error {
+	fmt.Printf("Input ID: ")
+	id := ioe.ReadInput()
 
 	return h.service.Remove(ctx, id)
 }
 
 func (h *handler) Export(ctx context.Context, filename string) error {
+	if filename == "" {
+		fmt.Printf("Input ID: ")
+		filename = ioe.ReadInput()
+	}
+
 	investments, err := h.service.List(ctx)
 	if err != nil {
 		return fmt.Errorf("service failed to list: %w", err)
@@ -114,6 +118,11 @@ func (h *handler) Export(ctx context.Context, filename string) error {
 }
 
 func (h *handler) Import(ctx context.Context, filename string) error {
+	if filename == "" {
+		fmt.Printf("Input ID: ")
+		filename = ioe.ReadInput()
+	}
+
 	bytes, err := os.ReadFile(filename)
 	if err != nil {
 		return fmt.Errorf("failed to read file: %w", err)

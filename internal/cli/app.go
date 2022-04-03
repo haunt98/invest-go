@@ -22,24 +22,14 @@ const (
 	commandExport = "export"
 	commandImport = "import"
 
-	flagID          = "id"
-	flagAmount      = "amount"
-	flagDate        = "date"
-	flagSource      = "source"
-	flagFilename    = "filename"
-	flagInteractive = "interactive"
+	flagFilename = "filename"
 
-	usageList        = "list all investments"
-	usageAdd         = "add investment"
-	usageRemove      = "remove investment"
-	usageExport      = "export data"
-	usageImport      = "import data"
-	usageID          = "id of investment"
-	usageAmount      = "amount of investment"
-	usageDate        = "date of investment, example 2022-12-31"
-	usageSource      = "source of investment"
-	usageFilename    = "filename to export/import"
-	usageInteractive = "interactive mode"
+	usageList     = "list all investments"
+	usageAdd      = "add investment"
+	usageRemove   = "remove investment"
+	usageExport   = "export data"
+	usageImport   = "import data"
+	usageFilename = "filename to export/import"
 )
 
 var aliasInteractive = []string{"i"}
@@ -74,41 +64,11 @@ func NewApp(db *sql.DB, location *time.Location) (*App, error) {
 				Name:   commandAdd,
 				Usage:  usageAdd,
 				Action: a.RunAdd,
-				Flags: []cli.Flag{
-					&cli.Int64Flag{
-						Name:  flagAmount,
-						Usage: usageAmount,
-					},
-					&cli.StringFlag{
-						Name:  flagDate,
-						Usage: usageDate,
-					},
-					&cli.StringFlag{
-						Name:  flagSource,
-						Usage: usageSource,
-					},
-					&cli.BoolFlag{
-						Name:    flagInteractive,
-						Usage:   usageInteractive,
-						Aliases: aliasInteractive,
-					},
-				},
 			},
 			{
 				Name:   commandRemove,
 				Usage:  usageRemove,
 				Action: a.RunRemove,
-				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:  flagID,
-						Usage: usageID,
-					},
-					&cli.BoolFlag{
-						Name:    flagInteractive,
-						Usage:   usageInteractive,
-						Aliases: aliasInteractive,
-					},
-				},
 			},
 			{
 				Name:   commandExport,

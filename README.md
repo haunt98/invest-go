@@ -17,8 +17,8 @@ Tracking investment.
 - [ ] Support Windows
 - [ ] Documentation
 - [ ] Unit test
-- [ ] Make interactive default true
-- [ ] Improve date input
+- [x] Make interactive default true
+- [x] Improve date input
 
 ## Install
 
