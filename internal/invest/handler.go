@@ -92,7 +92,7 @@ func (h *handler) Remove(ctx context.Context) error {
 
 func (h *handler) Export(ctx context.Context, filename string) error {
 	if filename == "" {
-		fmt.Printf("Input ID: ")
+		fmt.Printf("Input filename: ")
 		filename = ioe.ReadInput()
 	}
 
@@ -119,7 +119,7 @@ func (h *handler) Export(ctx context.Context, filename string) error {
 
 func (h *handler) Import(ctx context.Context, filename string) error {
 	if filename == "" {
-		fmt.Printf("Input ID: ")
+		fmt.Printf("Input filename: ")
 		filename = ioe.ReadInput()
 	}
 
@@ -129,7 +129,6 @@ func (h *handler) Import(ctx context.Context, filename string) error {
 	}
 
 	data := WrapInvestments{}
-
 	if err := json.Unmarshal(bytes, &data); err != nil {
 		return fmt.Errorf("json failed to unmarshal: %w", err)
 	}
