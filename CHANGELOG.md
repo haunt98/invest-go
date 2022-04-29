@@ -1,5 +1,45 @@
 # CHANGELOG
 
+## v0.4.0 (2022-04-29)
+
+### Added
+
+- feat: make interactive default (2022-04-03)
+
+- feat: move interactive to handler (2022-03-16)
+
+### Others
+
+- chore: goreleaser add windows (2022-04-29)
+
+- chore: add windows-latest in github action (2022-04-29)
+
+- Fix typo (2022-04-29)
+
+- chore: remove unused (2022-04-03)
+
+- chore: use date-go (2022-04-03)
+
+- build: update go.mod (2022-04-02)
+
+- chore: add TODO (2022-04-02)
+
+- chore: cleanup unused (2022-03-29)
+
+- chore: remove shouldInitDatabase (2022-03-29)
+
+- chore: bump go 1.18 in github action (2022-03-29)
+
+- chore: bump go 1.18 (2022-03-29)
+
+- chore: fix typo (2022-03-21)
+
+- chore: add roadmap (2022-03-16)
+
+- Format with datagrip (2022-02-11)
+
+- chore(changeloge): generate v0.3.0 (2022-02-08)
+
 ## v0.3.0 (2022-02-07)
 
 ### Added
